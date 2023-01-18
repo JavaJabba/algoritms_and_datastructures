@@ -1,7 +1,7 @@
 
 """ Some example functions using a Stack.  """
 
-from stackA import *
+from Semester_One.stackA import *
 
 def palindrome_check(string):
     """ Determine whether string is a palindrome, using a stack.    """
