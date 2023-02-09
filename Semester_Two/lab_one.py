@@ -4,6 +4,7 @@ Student Number: 121747725
 
 Algoritms and Data Structures II: Lab One: Binary Heap Queue
 '''
+import time
 
 class BinaryHeap:
     '''
@@ -36,29 +37,39 @@ class BinaryHeap:
         pass
 
     def max(self):
-        ''' return max value (top of heap) '''
-        pass
+        return self._heap[0]
 
     def remove_max(self):
-        ''' remove max value then resort '''
-        pass        
+        self._heap.remove[0]
+        #bubble sort down from top
+
 
     def length(self):
         return self._size
 
     # private methods
 
-    def _left(self):
-        pass
+    def _left(self, index):
+        left = self._heap[(2*index)+1]
+        return left
 
-    def _right(self):
-        pass
+    def _right(self, index):
+        right = self._heap[(2*index)+2]
+        return right
 
-    def _parent(self):
-        pass
+    def _parent(self, index):
+        parent = self._heap[(index-1)/2]
+        return parent
 
     def _upHeap(self):
+        #bubble sort up list
+        n = len(self._heap)
+        for i in range(n-1):
+            for j in range(0,n-i-1):
+                if self._heap[j] > self._heap[j+1]:
+                    self._heap[j], self._heap[j+1] = self._heap[j+1], self._heap[j]
         pass
 
     def _downHeap(self):
+        #bubble sort down list
         pass
