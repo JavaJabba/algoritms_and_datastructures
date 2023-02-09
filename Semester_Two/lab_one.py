@@ -34,15 +34,15 @@ class BinaryHeap:
 
     def add(self, key, value):
         ''' add (key,value) to the heap '''
-        self.item = (key, value)
-        self._heap.append(self.item)
-        self._parentNode = self._heap[(self.item-1)/2]
-        self._rightChild = self._heap[(self.item*2)+2]
-        self._leftChild = self._heap[(self.item*2)+1]
-        
-        if self._heap[self.item] > self._heap[parentNode]:
-            tempVal =self._parentNode
-            self._parent
+        self._item = (key, value)
+        self._heap.append(self._item)
+        self._currentNode = self._heap[len(self._heap)-1]
+        #while self._heap[self._currentNode] < self._parent(self._currentNode):
+         #   self._tempNode = self._parent(self._currentNode)
+            #self._parent(currentNode) = currentNode
+
+
+
 
     def max(self):
         return self._heap[0]
@@ -53,7 +53,8 @@ class BinaryHeap:
 
 
     def length(self):
-        return self._size
+        length = len(self._heap)-1
+        return length
 
     # private methods
 
@@ -66,8 +67,8 @@ class BinaryHeap:
         return right
 
     def _parent(self, index):
-        parent = self._heap[(index-1)/2]
-        return parent
+        self._parent = self._heap[(index-1)%2]
+        return self._parent
 
     def _upHeap(self):
         #bubble sort up list
@@ -92,7 +93,7 @@ class BinaryHeap:
         # print('pq has size:', pq.length(), '(should be 2)')
         # print(pq, '(should be 4,25, could also show index and value)')
         pq.add(19,'19')
-        # pq.add(12,'12')
+        pq.add(12,'12')
         # print(pq, '(should be 4,12,19,25)')
         # pq.add(17,'17')
         # pq.add(8,'8')
@@ -100,6 +101,7 @@ class BinaryHeap:
         # print('pq length:', pq.length(), '(should be 6)')
         # print('pq max item:', pq.max(), '(should be 4)')
         # print()
+        print(pq._parent(3))
         print(pq._heap)
         return pq
 
