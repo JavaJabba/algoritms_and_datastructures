@@ -82,6 +82,7 @@ class BinaryHeap:
         #bubble sort down list
         pass
 
+<<<<<<< Updated upstream
 
     def _testadd():
         # print('Testing that we can add items to an array-based binary heap PQ')
@@ -104,3 +105,22 @@ class BinaryHeap:
         return pq
 
 BinaryHeap._testadd()
+=======
+def checksorted(list:list):
+
+    i = 0
+    for i in range(len(list-1)):
+        if list[i] > list[i+1]:
+            i+1
+        else:
+            return "List Unsorted"
+
+
+def testonealg(inlist, f):
+    start_time = time.perf_counter()
+    f(inlist)
+    end_time = time.perf_counter()
+    checksorted(inlist, f)
+    return end_time - start_time
+
+>>>>>>> Stashed changes
