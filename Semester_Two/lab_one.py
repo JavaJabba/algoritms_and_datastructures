@@ -91,27 +91,27 @@ class BinaryHeap:
                     self._heap[j], parent = parent, self._heap[j]
 
 
-    # def _testadd():
-        # print('Testing that we can add items to an array-based binary heap PQ')
-        # pq = BinaryHeap()
-        # print('pq has size:', pq.length(), '(should be 0)')
-        # pq.add(25,'25')
-        # pq.add(4, '4')
-        # print('pq has size:', pq.length(), '(should be 2)')
-        # print(pq, '(should be 4,25, could also show index and value)')
-        # pq.add(19,'19')
-        # pq.add(12,'12')
-        # print(pq, '(should be 4,12,19,25)')
-        # pq.add(17,'17')
-        # pq.add(8,'8')
-        # print(pq, '(should be 4,12,8,25,17,19)')
-        # print('pq length:', pq.length(), '(should be 6)')
-        # print('pq max item:', pq.max(), '(should be 4)')
-        # print()
-        # print(pq._heap)
-        # return pq
+    def _testadd():
+        print('Testing that we can add items to an array-based binary heap PQ')
+        pq = BinaryHeap()
+        print('pq has size:', pq.length(), '(should be 0)')
+        pq.add(25,'25')
+        pq.add(4, '4')
+        print('pq has size:', pq.length(), '(should be 2)')
+        print(pq, '(should be 4,25, could also show index and value)')
+        pq.add(19,'19')
+        pq.add(12,'12')
+        print(pq, '(should be 4,12,19,25)')
+        pq.add(17,'17')
+        pq.add(8,'8')
+        print(pq, '(should be 4,12,8,25,17,19)')
+        print('pq length:', pq.length(), '(should be 6)')
+        print('pq max item:', pq.max(), '(should be 4)')
+        print()
+        print(pq._heap)
+        return pq
 
-# BinaryHeap._testadd()
+BinaryHeap._testadd()
 
 
 def checksorted(list:list, func):
