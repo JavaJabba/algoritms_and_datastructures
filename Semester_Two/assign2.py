@@ -307,7 +307,7 @@ class Graph:
         """ Return a BFS tree from v, with path lengths. 
         
         In the returned dictionary, each vertex (key) stores its parent (value).
-        """
+        """ 
         marked = {v:(None,0)}
         level = [v]
         levelint = 1
@@ -362,39 +362,79 @@ class APQ:
             self._key = None
             self._value = None 
             self._index = None
+        
+        def __str__(self):
+            strForm = "key: " + str(self._key) + " \tValue: " + str(self._value) + "\tIndex: " + str(self._index)
+            return strForm
 
-    def __init__(self, method):
-        pass
+    def __init__(self):
+        self._apq = []
 
-    def add(self, pKey, item):
+    def add(self, key, value):
         # add an item to the queue with priority key
         # return its element in the APQ
-        pass
+        newElement = APQ.Element(key, value, len(self._apq))
+        self._apq.append(newElement)
+        return newElement
 
-    def min():
+    def min(self):
         # return the value of the minimum key
-        pass
+        #iterate through array to find lowest key then return element
+        minValue = self._apq[0]
+        i = 0
+        for i in range(len(self._apq)-1):
+            for j in range(0, 1):
+                if self._apq[i][j] < minValue:
+                    minValue = self._apq[i][j]
+                i+1
+        newElement = APQ.Element(minValue, self._apq[i], i)
+        return newElement
 
-    def remove_min():
+    
+    def remove_min(self):
         # remove and return the value with the minimum key
-        pass
+        self._apq.remove[min()]
+        return "removed min value" + min()
 
-    def length():
+    def length(self):
         # return the number of items in the priority queue
-        pass
+        return len(self._apq)
 
-    def update_key(element, newKey):
+    def update_key(self):
         # update the key in the element to be the newKey
         # rebalance APQ
         pass
 
-    def get_key(element):
+    def get_key(self):
         # return the current key for the element
         pass
 
-    def remove(element):
+    def remove(self):
         # remove the element from the APQ
         # rebalance APQ
         pass
-        
 
+
+        
+    def _testadd():
+        apq = APQ()
+        # print('apq has size:',  apq.length(), '(should be 0)')
+        apq.add(25,'25') 
+        apq.add(4, '4')
+        print(apq.min())
+        # print('pq has size:', apq.length(), '(should be 2)')
+        # print(apq.Element(4, '4'))
+        # print(apq, '(should be 4,25, could also show index and value)')
+        # apq.add(19,'19')
+        # apq.add(12,'12')
+        # print(apq, '(should be 4,12,19,25)')
+        # apq.add(17,'17')
+        # apq.add(8,'8')
+        # print(apq, '(should be 4,12,8,25,17,19)')
+        # print('pq length:', apq.length(), '(should be 6)')
+        # print('pq max item:', apq.min(), '(should be 4)')
+        # print()
+        # return apq
+
+
+APQ._testadd()
