@@ -5,8 +5,8 @@ Lab 2: Quick Sort
 from random import randint
 def generateList(size):
     list = []
-    i=1
-    for i in range(1, size):
+    i=0
+    for i in range(size):
         newInt = randint(1, 99)
         list.append(newInt)
     return list
@@ -44,24 +44,34 @@ def merge(list1, list2, myList):
             myList[f1+f2] = list1[f1]
             f1 += 1     
     
-print(mergeSort(newList))
+#print(mergeSort(newList))
 
 
 # Implementation of Quick Sort using Lomuto's Partitioning Scheme.
 
 def quicksort(myList):
     n = len(myList)
-    for i in range(len(myList)):
+    '''for i in range(len(myList)):
         j = randint(0, n-1)
-        myList[i], myList[j] = myList[j], myList[i]
+        myList[i], myList[j] = myList[j], myList[i]'''
     _quicksort(myList, 0, n-1)
 
 def _quicksort(myList, point, length):
     pivot = myList[length]
+    print(pivot)
+    earliest = 0
     while point <= length:
-        if point > pivot:
-            greater = point
+        print("\nEarliest: "+ str(earliest))
+        print("point: "+ str(myList[point]))
+        print("pivot: "+ str(pivot))
+        if myList[point] > pivot and earliest == 0:
+            earliest = myList[point]
             point += 1
-        
+        elif myList[point] <= pivot and earliest != 0:
+            myList[point] = earliest = earliest, myList[point]
+            print("\nSwapped: "+ str(myList))
+        point += 1
+    
+         
  
-        
+quicksort(newList)
