@@ -56,22 +56,33 @@ def quicksort(myList):
         myList[i], myList[j] = myList[j], myList[i]'''
     _quicksort(myList, 0, n-1)
 
-def _quicksort(myList, point, length):
-    pivot = myList[length]
+def _quicksort(myList, pointer, length):
+    pivot = length
     print(pivot)
-    earliest = 0
-    while point <= length:
-        print("\nEarliest: "+ str(earliest))
-        print("point: "+ str(myList[point]))
-        print("pivot: "+ str(pivot))
-        if myList[point] > pivot and earliest == 0:
-            earliest = myList[point]
-            point += 1
-        elif myList[point] <= pivot and earliest != 0:
-            myList[point] = earliest = earliest, myList[point]
-            print("\nSwapped: "+ str(myList))
-        point += 1
-    
+    earlyBig = 0
+    while pointer < pivot:                                                          # While the check pointer hasn't reached the pivot.
+        print("\nEarliest: "+ str(myList[earlyBig]))
+        print("point: "+ str(myList[pointer]))
+        print("pivot: "+ str(myList[pivot]))
+        if myList[pointer] > myList[pivot]:
+            pointer += 1
+        elif myList[pointer] > myList[pivot] and earlyBig == 0:                     # Finding the earliest item thats bigger than the pivot.
+            earlyBig = pointer                                                      # Setting the earlyBig.
+            pointer += 1                                                            # Increment pointer by 1.
+        elif myList[pointer] < myList[pivot]:                                       # If the value at the pointer is less than the pivot value.
+            myList[pointer], myList[earlyBig] = myList[earlyBig], myList[pointer]   # Swap the values. 
+            earlyBig += 1
+            pointer += 1                                                            # increment both earlyBig and pointer.
+            print("Swapped:")
+            print(myList)
+        else:
+            pointer += 1
+    myList[pivot], myList[earlyBig] = myList[earlyBig], myList[pivot]               # Once we reach the pivot swap it with earlyBig
+    print("Break")
+    _quicksort(myList, 0, earlyBig-1)
+    _quicksort(myList, earlyBig+1, length)
+    print("Sorted List:")
+    print(myList)
          
- 
+
 quicksort(newList)
