@@ -13,10 +13,6 @@ def generateList(size):
         list.append(newInt)
     return list
 
-newList = generateList(10)
-print("\nNew List:")
-print(newList)
-
 # Bubble Sort function from Lecture Notes.
 def bubbleSort(list):
 

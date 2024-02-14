@@ -58,8 +58,7 @@ def quicksort(myList):
 
 def _quicksort(myList, pointer, length):
     pivot = length
-    print(pivot)
-    earlyBig = 0
+    earlyBig = pointer
     while pointer < pivot:                                                          # While the check pointer hasn't reached the pivot.
         print("\nEarliest: "+ str(myList[earlyBig]))
         print("point: "+ str(myList[pointer]))
@@ -78,12 +77,10 @@ def _quicksort(myList, pointer, length):
         else:
             pointer += 1
     myList[pivot], myList[earlyBig] = myList[earlyBig], myList[pivot]               # Once we reach the pivot swap it with earlyBig.
-   
-    print("Break")
-    print(earlyBig+1, earlyBig-1)
-    
-    _quicksort(myList, 0, earlyBig-1)
-    _quicksort(myList, earlyBig+1, length)
+    earlyBig += 1   
+
+    _quicksort(myList, 0, earlyBig-2)
+    _quicksort(myList, earlyBig, length)
     
     print("Sorted List:")
     print(myList)
