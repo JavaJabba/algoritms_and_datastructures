@@ -46,6 +46,13 @@ class graph():
     def __init__(self):
         self._keys = dict()
 
+    def __str__(self):
+        i = 0
+        for i in self._keys:
+            j = 0
+            for j in self._keys[i]:
+                return str(self._keys[i][j])
+
     def get_edge(self, x, y):
         if self._keys != None and x in self._keys and y in self._keys[x]:
             return self._keys[x][y]
@@ -84,5 +91,5 @@ class graph():
 graphtest = graph()
 graphtest.add_vertex("x")
 graphtest.add_vertex("y")
-graphtest.add_edge("x", "y")
-graphtest.get_edges
+graphtest.add_edge("x", "y", 2)
+print(graphtest)
