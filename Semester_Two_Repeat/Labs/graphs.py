@@ -18,7 +18,7 @@ class edge():
         self._element = element
         
     def __str__(self):
-       return (str(self._vertices[0]) + "--" + str(self._vertices[1]))
+       return (str(self._vertices[0]) + "--" + str(self._vertices[1] + " : " + str(self._element)))
 
     def vertices(self):
         return self._vertices
@@ -34,11 +34,11 @@ class edge():
     def element(self):
         return self._element
     
-    def _firstVertex(self, x):
-        return x
+    def _firstVertex(self):
+        return self._vertices[0]
 
-    def _secondVertex(self, y):
-        return y
+    def _secondVertex(self):
+        return self._vertices[1]
     
 
 class graph():
@@ -47,12 +47,16 @@ class graph():
         self._keys = dict()
 
     def __str__(self):
-        i = 0
-        for i in self._keys:
-            j = 0
-            for j in self._keys[i]:
-                return str(self._keys[i][j])
-
+        vertices = "Vertices: "
+        for v in self._keys:
+            vertices += str(self._keys[v]) + " "
+        edges = self.get_all_edges()
+        edgestr = "\nEdges: "
+        for e in edges:
+            edgestr += str(e) + " "
+        return vertices + edgestr
+        
+     
     def get_edge(self, x, y):
         if self._keys != None and x in self._keys and y in self._keys[x]:
             return self._keys[x][y]
@@ -60,13 +64,36 @@ class graph():
     def degree(self, x):
         return len(self._keys[x])
 
+    def get_all_edges(self):
+        edgelist = []
+        for x in self._keys:
+            for y in self._keys[x]:
+                if self._keys[x][y]._firstVertex() == x:
+                    edgelist.append(self._keys[x][y])
+        return edgelist
+
     def get_edges(self, x):
-        edgeList = []
         if x in self._keys:
+            edgeList = []
             for y in self._keys[x]:
                 edgeList.append(self._keys[x][y])
             return edgeList
         return None
+    
+    def vertices(self):
+        vertices = []
+        for x in self._keys:
+            vertices.append(self._keys[x])
+        return vertices
+
+    def num_vertices(self):
+        return len(self._keys)
+
+    def num_edges(self):
+        num = 0
+        for v in self._keys:
+            num += len(self._keys[v])
+        return num//2
 
     def add_vertex(self, element):
         v = vertex(element)
@@ -88,8 +115,44 @@ class graph():
         pass
 
 
-graphtest = graph()
-graphtest.add_vertex("x")
-graphtest.add_vertex("y")
-graphtest.add_edge("x", "y", 2)
-print(graphtest)
+def test_graph():
+    """ Test on a simple 3-vertex, 2-edge graph. """
+    g = graph()
+    a = g.add_vertex('a')
+    b = g.add_vertex('b')
+    c = g.add_vertex('c')
+    eab = g.add_edge(a, b, 2)
+    ebc = g.add_edge(b,c,9)
+
+    vnone = vertex('dummy')
+    evnone = g.add_edge(vnone, c, 0)   #should not create an edge
+    if evnone is not None:
+        print('ERROR: attempted edges  should have been none')
+
+    edges = g.get_edges(vnone)     #should be None: vnone not in graph
+    if edges != None:
+        print('ERROR: returned edges for non-existent vertex.')
+        
+    print('number of vertices:', g.num_vertices())
+    print('number of edges:', g.num_edges())
+
+    print('Vertex list should be a,b,c in any order :')
+    vertices = g.vertices()
+    for key in vertices:
+        print(key)
+    print('Edge list should be (a,b,2),(b,c,9) in any order :')
+    edges = g.get_all_edges()
+    for edge in edges:
+        print(edge)
+
+    print('Graph display should repeat the above:')
+    print(g)
+
+    v = g.add_vertex('d')
+    edges = g.get_edges(v)
+    if edges != []:
+        print('ERROR: should have returned an empty list, but got', edges)
+    print('Graph should now have a new vertex d with no edges')
+    print(g)
+
+test_graph()
