@@ -2,24 +2,29 @@
 Graphs
 '''
 
-class vertex():
+class vertex:
 
     def __init__(self, element):
         self._element = element
         
     def __str__(self):
         str(self._element)
+    
+    def element(self):
+        return str(self._element)
 
 
-class edge():
+class edge:
 
     def __init__(self, x, y, element):
         self._vertices = (x, y)
         self._element = element
         
     def __str__(self):
-       return (str(self._vertices[0]) + "--" + str(self._vertices[1] + " : " + str(self._element)))
-
+        if self._firstVertex() == None:
+            return "None"
+        return ("(" + str(self._firstVertex()) + "--" + str(self._secondVertex()) + ":" + str(self._element))
+    
     def vertices(self):
         return self._vertices
 
@@ -41,7 +46,7 @@ class edge():
         return self._vertices[1]
     
 
-class graph():
+class graph:
 
     def __init__(self):
         self._keys = dict()
@@ -81,10 +86,7 @@ class graph():
         return None
     
     def vertices(self):
-        vertices = []
-        for x in self._keys:
-            vertices.append(self._keys[x])
-        return vertices
+        return [key for key in self._keys]
 
     def num_vertices(self):
         return len(self._keys)
@@ -101,7 +103,7 @@ class graph():
         return v
 
     def add_edge(self, x, y, element):
-        if x not in self._keys or y not in self._keys:
+        if not x in self._keys or not y in self._keys:
             return None
         e = edge(x, y, element)
         self._keys[x][y] = e
@@ -118,9 +120,9 @@ class graph():
 def test_graph():
     """ Test on a simple 3-vertex, 2-edge graph. """
     g = graph()
-    a = g.add_vertex('a')
-    b = g.add_vertex('b')
-    c = g.add_vertex('c')
+    a = g.add_vertex("a")
+    b = g.add_vertex("b")
+    c = g.add_vertex("c")
     eab = g.add_edge(a, b, 2)
     ebc = g.add_edge(b,c,9)
 
@@ -139,7 +141,7 @@ def test_graph():
     print('Vertex list should be a,b,c in any order :')
     vertices = g.vertices()
     for key in vertices:
-        print(key)
+        print(key.element())
     print('Edge list should be (a,b,2),(b,c,9) in any order :')
     edges = g.get_all_edges()
     for edge in edges:
