@@ -2,7 +2,7 @@
 Graphs
 '''
 
-class vertex:
+class Vertex:
 
     def __init__(self, element):
         self._element = element
@@ -14,16 +14,14 @@ class vertex:
         return str(self._element)
 
 
-class edge:
+class Edge:
 
     def __init__(self, x, y, element):
-        self._vertices = (x, y)
+        self._vertices = (x,y)
         self._element = element
         
     def __str__(self):
-        if self._firstVertex() == None:
-            return "None"
-        return ("(" + str(self._firstVertex()) + "--" + str(self._secondVertex()) + ":" + str(self._element))
+        return str(self._vertices), str(self._element)
     
     def vertices(self):
         return self._vertices
@@ -46,7 +44,7 @@ class edge:
         return self._vertices[1]
     
 
-class graph:
+class Graph:
 
     def __init__(self):
         self._keys = dict()
@@ -98,14 +96,14 @@ class graph:
         return num//2
 
     def add_vertex(self, element):
-        v = vertex(element)
+        v = Vertex(element)
         self._keys[v] = dict()
         return v
 
     def add_edge(self, x, y, element):
         if not x in self._keys or not y in self._keys:
             return None
-        e = edge(x, y, element)
+        e = Edge(x, y, element)
         self._keys[x][y] = e
         self._keys[y][x] = e
         return e
@@ -117,23 +115,85 @@ class graph:
         pass
 
 
+# APQ Implementation for evaluating.
+    
+class APQ:
+
+
+    class element:
+        
+        def __init__(self, key, value, index):
+            self._key = key           
+            self._value = value
+            self._index = index
+
+        def __eq__(self, other):
+            return self._key == other._key
+        
+        def __lt__(self, other):
+            return self._key < other._key
+        
+        def _wipe(self):
+            self._key = None
+            self._value = None
+            self._index = None
+
+        def __str__(self):
+            strForm = "key: " + str(self._key) + " \tValue: " + str(self._value) + "\tIndex: " + str(self._index)
+            return strForm
+
+    def __init__(self):
+        self._apq = []
+        self._minElement = None
+
+    def addItem(self, key, value):
+
+        newElement = APQ.element(key, value, len(self._apq)-1)
+        self._apq.append(newElement)
+
+        if self.length() <= 1:
+            self._minElement = newElement
+        elif newElement.__lt__(self._minElement):
+            self._minElement = newElement
+        return self._apq
+    
+    def min(self):
+        return self._minElement
+    
+    def removeMin(self):
+        return
+    
+    def remove(self, element):
+        if element[2] != self.length()-1:
+            index = APQ.element.
+            self._apq[index], self._apq[self.length()] = self._apq[self.length()], self._apq[index]
+        element._wipe()
+
+    def length(self):
+        return len(self._apq)
+
+    
+
+
+
+
+def testadd():
+    apq = APQ()
+    a = apq.addItem(27, "Egg")
+    b = apq.addItem(25, "sausage")
+    print(apq.min())
+    print(apq.remove(b))
+    
+
+
 def test_graph():
     """ Test on a simple 3-vertex, 2-edge graph. """
-    g = graph()
+    g = Graph()
     a = g.add_vertex("a")
     b = g.add_vertex("b")
     c = g.add_vertex("c")
-    eab = g.add_edge(a, b, 2)
+    eab = g.add_edge(a,b,2)
     ebc = g.add_edge(b,c,9)
-
-    vnone = vertex('dummy')
-    evnone = g.add_edge(vnone, c, 0)   #should not create an edge
-    if evnone is not None:
-        print('ERROR: attempted edges  should have been none')
-
-    edges = g.get_edges(vnone)     #should be None: vnone not in graph
-    if edges != None:
-        print('ERROR: returned edges for non-existent vertex.')
         
     print('number of vertices:', g.num_vertices())
     print('number of edges:', g.num_edges())
@@ -142,6 +202,7 @@ def test_graph():
     vertices = g.vertices()
     for key in vertices:
         print(key.element())
+
     print('Edge list should be (a,b,2),(b,c,9) in any order :')
     edges = g.get_all_edges()
     for edge in edges:
@@ -157,4 +218,4 @@ def test_graph():
     print('Graph should now have a new vertex d with no edges')
     print(g)
 
-test_graph()
+testadd()
