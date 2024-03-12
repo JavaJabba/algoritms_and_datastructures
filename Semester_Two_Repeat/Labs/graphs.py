@@ -8,10 +8,10 @@ class Vertex:
         self._element = element
         
     def __str__(self):
-        str(self._element)
+        return " {} ".format(self._element)
     
     def element(self):
-        return str(self._element)
+        return self._element
 
 
 class Edge:
@@ -21,7 +21,10 @@ class Edge:
         self._element = element
         
     def __str__(self):
-        return str(self._vertices), str(self._element)
+        return "{} -- {} : {} ".format(self._vertices[0], self._vertices[1], self._element)
+    
+    def __repr__(self):
+        return str(self)
     
     def vertices(self):
         return self._vertices
@@ -52,14 +55,16 @@ class Graph:
     def __str__(self):
         vertices = "Vertices: "
         for v in self._keys:
-            vertices += str(self._keys[v]) + " "
+            vertices += str(v) + " "
         edges = self.get_all_edges()
         edgestr = "\nEdges: "
         for e in edges:
             edgestr += str(e) + " "
         return vertices + edgestr
+    
+    def __repr__(self):
+        return str(self)
         
-     
     def get_edge(self, x, y):
         if self._keys != None and x in self._keys and y in self._keys[x]:
             return self._keys[x][y]
@@ -115,7 +120,7 @@ class Graph:
         pass
 
 
-# APQ Implementation for evaluating.
+# APQ Unsorted List Implementation for evaluating.
     
 class APQ:
 
@@ -146,45 +151,146 @@ class APQ:
         self._apq = []
         self._minElement = None
 
-    def addItem(self, key, value):
+    def __str__(self):
+        strForm = ""
+        for i in self._apq:
+            strForm += "( "+ str(i) +" ) "
+        return strForm
 
-        newElement = APQ.element(key, value, len(self._apq)-1)
+    def __repr__(self):
+        return str(self)
+    
+    def addItem(self, key, value):
+        index = len(self._apq)
+        newElement = APQ.element(key, value, index)
         self._apq.append(newElement)
 
         if self.length() <= 1:
             self._minElement = newElement
         elif newElement.__lt__(self._minElement):
             self._minElement = newElement
-        return self._apq
+        return (key, value, index)
     
     def min(self):
         return self._minElement
     
     def removeMin(self):
-        return
+        self.remove(self._minElement)
+        minEle = self._apq[0][0]
+        for ele in self._apq:
+            if self.apq[ele][0] < minEle:
+                minEle = self.apq[ele][0]
+        self._minElement = minEle
+        return minEle
+        
     
     def remove(self, element):
         if element[2] != self.length()-1:
-            index = APQ.element.
-            self._apq[index], self._apq[self.length()] = self._apq[self.length()], self._apq[index]
-        element._wipe()
+            index = element[2]
+            self._apq[index], self._apq[self.length()-1] = self._apq[self.length()-1], self._apq[index]
+        self._apq.pop()
+        return self._apq[self.length()-1]
 
     def length(self):
         return len(self._apq)
-
     
+    def update_key(self, element, newkey):
+        ele = self._apq[element[2]]
 
+        
+    
+class APQHeap:
 
+    class element:
+        
+        def __init__(self, key, value, index):
+            self._key = key           
+            self._value = value
+            self._index = index
+
+        def __eq__(self, other):
+            return self._key == other._key
+        
+        def __lt__(self, other):
+            return self._key < other._key
+        
+        def _wipe(self):
+            self._key = None
+            self._value = None
+            self._index = None
+
+        def __str__(self):
+            strForm = "key: " + str(self._key) + " \tValue: " + str(self._value) + "\tIndex: " + str(self._index)
+            return strForm
+
+    def __init__(self):
+        self._apq = []
+
+    def __str__(self):
+        strForm = ""
+        for i in self._apq:
+            strForm += "( "+ str(i) +" ) "
+        return strForm
+
+    def __repr__(self):
+        return str(self)
+    
+    def addItem(self, key, value):
+        index = len(self._apq)
+        newElement = APQHeap.element(key, value, index)
+        self._apq.append(newElement)
+        
+        parent = self._apq[-1] // 2
+        if parent[0] > key:
+            newIndex = self.bubbleUP(self._apq, index)
+        return (key, value, newIndex)
+
+    def bubbleUP(self, list, index):
+        while index > 0:
+            parent = (index-1) // 2
+            if list[index] > list[parent]:
+                list[index], list[parent] = list[parent], list[index]
+                index = parent
+        return index
+    
+    def min(self):
+        return self._apq[0]
+
+    def removeMin(self):
+        self._apq[0], self._apq[self.length()-1] = self._apq[self.length()-1], self._apq[0]
+        self._pop()
+        self._bubbleDown(self._apq, 0, len(self._apq)-1)
+        return self.min()
+
+    def bubbleDown(self, list, index, last):
+        while last > (index*2):
+            leftChild = index*2 + 1
+            rightChild = index*2 + 2
+            maxChild = leftChild
+            if last > leftChild and list[rightChild] > list[leftChild]:
+                maxChild = rightChild
+            if list[index] < list[maxChild]:
+                list[index], list[maxChild] = list[maxChild], list[index]
+                index = maxChild
+
+    def update_key(self, element, newKey):
+        return
+
+    def remove(self, element):
+        if element[2] != self.length()-1:
+            index = element[2]
+            self._apq[index], self._apq[self.length()-1] = self._apq[self.length()-1], self._apq[index]
+        self._apq.pop()
+        return self._apq[self.length()-1]
 
 
 def testadd():
     apq = APQ()
     a = apq.addItem(27, "Egg")
     b = apq.addItem(25, "sausage")
-    print(apq.min())
-    print(apq.remove(b))
-    
-
+    print(apq)
+    apq.update_key(b, 22)
+    print(apq)
 
 def test_graph():
     """ Test on a simple 3-vertex, 2-edge graph. """
@@ -218,4 +324,4 @@ def test_graph():
     print('Graph should now have a new vertex d with no edges')
     print(g)
 
-testadd()
+test_graph()
