@@ -1,6 +1,7 @@
 '''
 Graphs
 '''
+from random import randint
 
 class Vertex:
 
@@ -64,10 +65,11 @@ class Graph:
     
     def __repr__(self):
         return str(self)
-        
+    
     def get_edge(self, x, y):
         if self._keys != None and x in self._keys and y in self._keys[x]:
             return self._keys[x][y]
+        return None
 
     def degree(self, x):
         return len(self._keys[x])
@@ -196,8 +198,6 @@ class APQ:
     
     def update_key(self, element, newkey):
         ele = self._apq[element[2]]
-
-        
     
 class APQHeap:
 
@@ -284,6 +284,33 @@ class APQHeap:
         return self._apq[self.length()-1]
 
 
+def buildRandomGraph(n, m):
+    g = Graph()
+    vertices = []
+    i = 0
+    for i in range(0, n-1):
+        ref = g.add_vertex(i)
+        vertices.append(ref)
+        weight = randint(0, len(vertices)-1) + randint(0, len(vertices)-1)
+        if i >= 2:
+            index = randint(0, len(vertices)-1)
+            last = vertices[-1]
+            e = g.add_edge(index, last, weight)
+            print(e)
+        i += 1
+    x = randint(0, len(vertices)-1)
+    y = randint(0, len(vertices)-1)
+    j = 0
+    for j in range(m, (n-1)):
+        if g.get_edge(x, y) == None:
+            e = g.add_edge(x, y, weight)
+        j += 1
+    print(g)
+
+
+buildRandomGraph(6, 4)
+
+
 def testadd():
     apq = APQ()
     a = apq.addItem(27, "Egg")
@@ -300,9 +327,12 @@ def test_graph():
     c = g.add_vertex("c")
     eab = g.add_edge(a,b,2)
     ebc = g.add_edge(b,c,9)
-        
+    
     print('number of vertices:', g.num_vertices())
     print('number of edges:', g.num_edges())
+
+    print("Degree of a should be 1\n")
+    g.degree(a)
 
     print('Vertex list should be a,b,c in any order :')
     vertices = g.vertices()
@@ -324,4 +354,3 @@ def test_graph():
     print('Graph should now have a new vertex d with no edges')
     print(g)
 
-test_graph()
