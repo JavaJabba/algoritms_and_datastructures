@@ -288,23 +288,29 @@ def buildRandomGraph(n, m):
     g = Graph()
     vertices = []
     i = 0
-    for i in range(0, n-1):
+    for i in range(0, n):
         ref = g.add_vertex(i)
         vertices.append(ref)
-        weight = randint(0, len(vertices)-1) + randint(0, len(vertices)-1)
+        weight = randint(1, 20)
         if i >= 2:
-            index = randint(0, len(vertices)-1)
+            index = vertices[randint(0, len(vertices)-1)]
             last = vertices[-1]
-            e = g.add_edge(index, last, weight)
-            print(e)
+            if index == last:
+                y = vertices[randint(0, len(vertices)-1)]
+            g.add_edge(index, last, weight)
         i += 1
-    x = randint(0, len(vertices)-1)
-    y = randint(0, len(vertices)-1)
     j = 0
     for j in range(m, (n-1)):
-        if g.get_edge(x, y) == None:
-            e = g.add_edge(x, y, weight)
+        x = vertices[randint(0, len(vertices)-1)]
+        y = vertices[randint(0, len(vertices)-1)]
+        if x == y:
+            y = vertices[randint(0, len(vertices)-1)]
+        if g.get_edge(x, y) == None or g.get_edge(y, x) == None:
+            g.add_edge(x, y, weight)
         j += 1
+    edges = g.get_all_edges()
+    for edge in edges:
+        print(edge)
     print(g)
 
 
