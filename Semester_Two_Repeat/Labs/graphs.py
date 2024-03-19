@@ -3,6 +3,8 @@ Graphs
 '''
 from random import randint
 
+# Graph Implementation
+
 class Vertex:
 
     def __init__(self, element):
@@ -151,7 +153,7 @@ class APQ:
 
     def __init__(self):
         self._apq = []
-        self._minElement = None
+        self._minElement = ()
 
     def __str__(self):
         strForm = ""
@@ -198,7 +200,9 @@ class APQ:
     
     def update_key(self, element, newkey):
         ele = self._apq[element[2]]
-    
+
+# APQ Heap implementation for evaluating.
+        
 class APQHeap:
 
     class element:
@@ -240,14 +244,14 @@ class APQHeap:
         newElement = APQHeap.element(key, value, index)
         self._apq.append(newElement)
         
-        parent = self._apq[-1] // 2
-        if parent[0] > key:
-            newIndex = self.bubbleUP(self._apq, index)
-        return (key, value, newIndex)
+        parent = self._apq[index % 2]
+        if parent._key > key:
+            index = self.bubbleUP(self._apq, index)
+        return (key, value, index)
 
     def bubbleUP(self, list, index):
         while index > 0:
-            parent = (index-1) // 2
+            parent = (index-1) / 2
             if list[index] > list[parent]:
                 list[index], list[parent] = list[parent], list[index]
                 index = parent
@@ -258,9 +262,12 @@ class APQHeap:
 
     def removeMin(self):
         self._apq[0], self._apq[self.length()-1] = self._apq[self.length()-1], self._apq[0]
-        self._pop()
-        self._bubbleDown(self._apq, 0, len(self._apq)-1)
+        self._apq.pop()
+        self.bubbleDown(self._apq, 0, len(self._apq)-1)
         return self.min()
+
+    def length(self):
+        return len(self._apq)
 
     def bubbleDown(self, list, index, last):
         while last > (index*2):
@@ -312,18 +319,60 @@ def buildRandomGraph(n, m):
     for edge in edges:
         print(edge)
     print(g)
+    return g
+
+# Prims Algorithm
+    
+def primList():
+    # Build graph and initialise APQ and locs Dictionary.
+    G = buildRandomGraph(10, 5)
+    apq = APQ()
+    locs = dict()
+    mst = []
+    index = 0
+    # Populate apq and locs dict for each vertex in graph.
+    for v in G.vertices():
+        apq.addItem(float('inf'), (v, None))
+        locs[v] = index
+        index += 1
+    while apq:
+        min = apq.removeMin()
+        locs.pop(v)
+        if min != None:
+            mst.append[min]
+        for v in G.get_edges(min):
+            w = v.opposite(v)
+            if w in locs:
+                cost = v[2]
 
 
-buildRandomGraph(6, 4)
+def primHeap():
+    # Build graph and initialise APQ and locs Dictionary.
+    G = buildRandomGraph(10, 5)
+    apq = APQHeap()
+    locs = dict()
+    mst = []
+    index = 0
+    for v in G.vertices():
+        apq.addItem(float('inf'), (v, None))
+        locs[v] = index
+        index += 1
+    while apq:
+        min = apq.removeMin()
+        locs.pop()
 
+
+primHeap()
 
 def testadd():
-    apq = APQ()
+    apq = APQHeap()
     a = apq.addItem(27, "Egg")
     b = apq.addItem(25, "sausage")
     print(apq)
     apq.update_key(b, 22)
     print(apq)
+
+#testadd()
 
 def test_graph():
     """ Test on a simple 3-vertex, 2-edge graph. """
