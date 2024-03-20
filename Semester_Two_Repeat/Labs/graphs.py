@@ -110,7 +110,7 @@ class Graph:
         return v
 
     def add_edge(self, x, y, element):
-        if not x in self._keys or not y in self._keys:
+        if x not in self._keys or y not in self._keys:
             return None
         e = Edge(x, y, element)
         self._keys[x][y] = e
@@ -122,7 +122,6 @@ class Graph:
 
     def remove_vertex(x):
         pass
-
 
 # APQ Unsorted List Implementation for evaluating.
     
@@ -148,7 +147,7 @@ class APQ:
             self._index = None
 
         def __str__(self):
-            strForm = "key: " + str(self._key) + " \tValue: " + str(self._value) + "\tIndex: " + str(self._index)
+            strForm = "key: " + str(self._key) + " \tValue: " + str(self._value[0]._element) + "\tIndex: " + str(self._index)
             return strForm
 
     def __init__(self):
@@ -158,7 +157,7 @@ class APQ:
     def __str__(self):
         strForm = ""
         for i in self._apq:
-            strForm += "( "+ str(i) +" ) "
+            strForm += "( "+ str(i) +" ) \n"
         return strForm
 
     def __repr__(self):
@@ -169,8 +168,8 @@ class APQ:
         newElement = APQ.element(key, value, index)
         self._apq.append(newElement)
 
-        if self.length() <= 1:
-            self._minElement = newElement
+        if self.length() == 1:
+            self._minElement = self._apq[0]
         elif newElement.__lt__(self._minElement):
             self._minElement = newElement
         return (key, value, index)
@@ -180,27 +179,27 @@ class APQ:
     
     def removeMin(self):
         self.remove(self._minElement)
-        minEle = self._apq[0][0]
+        minEle = self._apq[randint(0, self.length()-1)]
         for ele in self._apq:
-            if self.apq[ele][0] < minEle:
-                minEle = self.apq[ele][0]
+            if ele._value[0]._element < minEle._value[0]._element:
+                minEle = ele
         self._minElement = minEle
-        return minEle
-        
+        return minEle._value[0]
     
     def remove(self, element):
-        if element[2] != self.length()-1:
-            index = element[2]
+        if element._index != self.length()-1:
+            index = element._index
             self._apq[index], self._apq[self.length()-1] = self._apq[self.length()-1], self._apq[index]
-        self._apq.pop()
-        return self._apq[self.length()-1]
+            self.updateIndex(index, index)
+        return self._apq.pop()
 
     def length(self):
         return len(self._apq)
     
-    def update_key(self, element, newkey):
-        ele = self._apq[element[2]]
-
+    def updateIndex(self, index, newIndex):
+        ele = self._apq[index]
+        ele._index = newIndex
+    
 # APQ Heap implementation for evaluating.
         
 class APQHeap:
@@ -280,9 +279,6 @@ class APQHeap:
                 list[index], list[maxChild] = list[maxChild], list[index]
                 index = maxChild
 
-    def update_key(self, element, newKey):
-        return
-
     def remove(self, element):
         if element[2] != self.length()-1:
             index = element[2]
@@ -290,42 +286,42 @@ class APQHeap:
         self._apq.pop()
         return self._apq[self.length()-1]
 
-
+# Random Graph Generator.
 def buildRandomGraph(n, m):
     g = Graph()
     vertices = []
     i = 0
     for i in range(0, n):
-        ref = g.add_vertex(i)
+        ref = g.add_vertex(str(i))
         vertices.append(ref)
         weight = randint(1, 20)
         if i >= 2:
             index = vertices[randint(0, len(vertices)-1)]
             last = vertices[-1]
-            if index == last:
-                y = vertices[randint(0, len(vertices)-1)]
+            if str(index) == str(last):
+                index = vertices[randint(0, len(vertices)-1)]
             g.add_edge(index, last, weight)
         i += 1
     j = 0
     for j in range(m, (n-1)):
+        weight = randint(1, 20)
         x = vertices[randint(0, len(vertices)-1)]
         y = vertices[randint(0, len(vertices)-1)]
-        if x == y:
+        if str(x) == str(y):
             y = vertices[randint(0, len(vertices)-1)]
-        if g.get_edge(x, y) == None or g.get_edge(y, x) == None:
-            g.add_edge(x, y, weight)
+        if g.get_edge(x, y) == None and g.get_edge(y, x) == None:
+            e = g.add_edge(x, y, weight)
         j += 1
-    edges = g.get_all_edges()
-    for edge in edges:
-        print(edge)
-    print(g)
+    print("\nGraph Created:\n" + str(g))
     return g
 
+
+#buildRandomGraph(10, 8)
 # Prims Algorithm
     
 def primList():
     # Build graph and initialise APQ and locs Dictionary.
-    G = buildRandomGraph(10, 5)
+    G = buildRandomGraph(10, 8)
     apq = APQ()
     locs = dict()
     mst = []
@@ -335,16 +331,39 @@ def primList():
         apq.addItem(float('inf'), (v, None))
         locs[v] = index
         index += 1
+    i = 0
+    print(apq)
     while apq:
-        min = apq.removeMin()
-        locs.pop(v)
-        if min != None:
-            mst.append[min]
-        for v in G.get_edges(min):
-            w = v.opposite(v)
-            if w in locs:
-                cost = v[2]
-
+        print("iter: " + str(i))
+        i+=1
+        minEle = apq.removeMin()
+        print("removed " + str(minEle))
+        print(str(apq) + "\n")
+        del locs[minEle]
+        cost = 0
+        minCost = 0
+        edgelist = G.get_edges(minEle)
+        print(edgelist)
+        if edgelist != None:
+            for edge in edgelist:
+                if edge not in mst:
+                    if len(edgelist) == 1:
+                        mst.append(edge)
+                    if edge._secondVertex() in locs:
+                        if cost == 0:
+                            print("1")
+                            cost = edge._element
+                        if cost > edge._element:
+                            print("2")
+                            cost = edge._element
+                            minCost = edge
+                if minCost != 0:
+                    mst.append(minCost)
+        print(mst)
+    return mst
+            
+        
+print(primList())
 
 def primHeap():
     # Build graph and initialise APQ and locs Dictionary.
@@ -361,15 +380,12 @@ def primHeap():
         min = apq.removeMin()
         locs.pop()
 
-
-primHeap()
-
 def testadd():
     apq = APQHeap()
     a = apq.addItem(27, "Egg")
     b = apq.addItem(25, "sausage")
     print(apq)
-    apq.update_key(b, 22)
+    apq.removeMin()
     print(apq)
 
 #testadd()
